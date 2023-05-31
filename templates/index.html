@@ -1,0 +1,28 @@
+<html>
+  <head>
+    {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+    
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+  </head>
+  <body class="ma5 bg-dark-gray near-white">
+    <div class="w-100 flex justify-around items-center">
+      <div class="sans-serif flex flex-column">
+        <h1 class="tc">En deckarsaga</h1>
+        <button id="startBtn" class="w5 pa3 f2 bg-near-white br3">Starta!</button>
+      </div>
+    </div>
+    
+  </body>
+  
+  <script>
+    let startBtn = document.querySelector("#startBtn");
+    startBtn.onclick = (e) => {
+      console.log('Start!')
+      location.replace('/episode/1')
+    };
+
+  </script>
+</html>

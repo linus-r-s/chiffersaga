@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  </head>
+  <body class="m-5" style="background: #073642; color: #fdf6e3;">
+    <div class="container-fluid">
+      <h1>Caesar-chiffer</h1>
+      <div>
+        <p class="lead">Ett caesar-chiffer går ut på att flytta varje bokstav i ordet ett visst antal steg framåt i alfabetet.</p>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-light table-striped">
+            <caption style="color: #fdf6e3;">Exempel på caesar-chiffer</caption>
+            <thead class="thead-light">
+              <tr>
+                <th>Klartext</th>
+                <th>Steg (nyckel)</th>
+                <th>Kodtext</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ABCD</td>
+                <td>1</td>
+                <td>BCDE</td>
+              </tr>
+              <tr>
+                <td>ABCD</td>
+                <td>3</td>
+                <td>DEFG</td>
+              </tr>
+              <tr>
+                <td>ZÅÄÖ</td>
+                <td>5</td>
+                <td>BCDE</td>
+              </tr>
+              <tr>
+                <td>GURKA</td>
+                <td>10</td>
+                <td>QBÄUK</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+      <div class="row">
+        <div class="col">
+        <p>Om nyckeln är 3 går du alltså 3 steg framåt från bokstaven så att A blir D, B blir E och så vidare. Om du kommer till slutet av alfabetet börjar du om, så att Ä blir B och Ö blir C.</p>
+        <p>För att avkoda ett caesar-chiffer gör du likadant fast går baklänges. D blir A, C blir Ö och så vidare.</p>
+        <p class="lead">Om du ska lösa ett caesar-chiffer och inte vet vilken nyckeln är kan det vara smart att leta efter bokstäver som kommer efter varandra i alfabetet.</p>
+          <p>Chansen är stor att det är ST i klartext så testa med det.</p>
+      </div>
+      <div class="col"></div>
+    </div>
+      <hr>
+    <div>
+      <h6>Här har du en tabell som visar vilken plats varje bokstav har i alfabetet.</h6>
+      <div class="row">
+        <div class="col" style="columns: 3;">
+          <table class="table table-light table-striped">
+            <thead class="text-center">
+              <th>Bokstav</th>
+              <th>Plats</th>
+              <th>Ytterligare platser</th>
+            </thead>
+            <tbody>
+              {% for letter in letters %}
+              <tr class="text-center">
+                <td>{{ letter }}</td>
+                <td>{{ loop.index }}</td>
+                <td>{{ loop.index + 29 }}, {{ loop.index + 58 }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>

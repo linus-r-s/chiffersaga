@@ -1,0 +1,110 @@
+<html>
+  <head>
+    {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>En deckarsaga | Avsnitt {% block title %}{{episode.number}}{% endblock %}</title>
+    {% endblock %}
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+    <style>
+      .hint {
+        transition: opacity 2s;
+      }
+      
+      .visible {
+        opacity: 1;
+      }
+      
+      .invisible {
+        opacity: 0;
+      }
+
+      
+      {% if episode.cipher.__type__ == 'Morse' %}
+      .lamp {
+        opacity: 0;
+        blur(.5);
+        animation: morse {{episode.encrypted.length/2}}s steps(1, end) infinite;
+        animation-delay: 1s;
+      }
+      {{ episode.encrypted.keyframes }}
+      {% endif %}
+      }
+      
+    </style>
+  </head>
+  <body class="ma5 bg-dark-gray near-white sans-serif">
+    <div class="flex flex-column w-100 items-center">
+      <div class="w-third">
+        <h1>{{episode.title}}</h1>
+        <p class="lh-copy">{{episode.text|safe}}</p>
+        {% if episode.cipher.__type__ == 'Pagoda' or episode.cipher.__type__ == 'Squiggle' %}
+          <div class="flex flex-column mv5">  
+            <img src="{{episode.encrypted}}" alt="">
+          </div>
+        {% elif episode.cipher.__type__ == 'Morse' %}
+          <div class="flex">
+            <div class="w3 h3 br-100 bg-gold lamp"></div>
+            <!-- <button id="#restartBtn">Spela igen</button> -->
+          </div>
+        {% else %}
+          <p class="encrypted f2 serif">{{episode.encrypted}}</p>
+        {% endif %}
+        <div class="flex justify-between">
+          <input class="pa3 ma2 br3" type="text" id="guessInput" placeholder="Svar">
+          <button class="pa3 ma2 br3" id="guessBtn">Svara</button>
+          <button class="pa3 ma2 br3" id="hintBtn">Ledtråd</button>
+        </div>
+        <div class="flex flex-column">
+          <div class="hints">
+            {% for hint in episode.hints %}
+              <p class="hint invisible f3">{{hint|safe}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      
+        let guessInput = document.querySelector('input');
+        let guessBtn = document.querySelector('#guessBtn');
+        
+        let hintBtn = document.querySelector('#hintBtn');
+        let hints = document.querySelectorAll('.hints > p');
+
+        let hintsUsed = 0;
+    
+        function check() {
+          console.log('Check');
+          if (guessInput.value.toLowerCase() == '{{episode['message']}}'.toLowerCase()) {
+            guessInput.style = 'background: #9EEBCF;'
+            location.assign('/episode/{{episode.number + 1}}')
+          } else {
+            guessInput.style = 'background: #FF725C;'
+            return false
+          }
+        }
+        
+        function showHint() {
+          if (hintsUsed < hints.length) {
+            hints[hintsUsed].classList.toggle('invisible');
+            hintsUsed += 1;
+            if (hintsUsed == hints.length) {
+              hintBtn.setAttribute('disabled', true)
+            }
+          }
+        }
+        
+        guessInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            if (check()) {
+              e.target.blur()
+            }
+          }
+        })
+        
+        guessBtn.addEventListener('click', check);
+        {% block next_btn %}{% endblock %}
+        hintBtn.addEventListener('click', showHint);
+    </script>
+  </body>
+</html>
